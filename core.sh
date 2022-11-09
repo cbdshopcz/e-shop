@@ -16,29 +16,29 @@ cd SERVER
 mkdir $AppName
 cd $AppName
 cat <<EOF >docker-compose.yml
-$ cat docker-compose.yaml
 version: '3.0'
 
- $AppName:
-    image: wordpress
-    links:
-     - mariadb_$AppName:mysql
-    environment:
-     - WORDPRESS_DB_PASSWORD=$AppPass
-    ports:
-     - "$AppPort:80"
-    volumes:
-     - ./html_$AppName:/var/www/html
-    restart: always
+services:
+  $AppName:
+     image: wordpress
+     links:
+      - mariadb_$AppName:mysql
+     environment:
+      - WORDPRESS_DB_PASSWORD=$AppPass
+     ports:
+      - "$AppPort:80"
+     volumes:
+      - ./html_$AppName:/var/www/html
+     restart: always
 
- mariadb_$AppName:
-    image: mariadb
-    environment:
-     - MYSQL_ROOT_PASSWORD=$AppPass
-     - MYSQL_DATABASE_0=wordpress_$AppName
-    volumes:
-     - ./database_$AppName:/var/lib/mysql
-    restart: always 
+  mariadb_$AppName:
+     image: mariadb
+     environment:
+      - MYSQL_ROOT_PASSWORD=$AppPass
+      - MYSQL_DATABASE_0=wordpress_$AppName
+     volumes:
+      - ./database_$AppName:/var/lib/mysql
+     restart: always 
 EOF
 echo DimensionCloud run "$AppName" --public --cloud --port $AppPort
 wait
